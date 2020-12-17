@@ -1,6 +1,6 @@
-package az.newsapp
+package az.newsapp.data
 
-import az.newsapp.Article
+import az.newsapp.data.Article
 
 data class NewsResponse(
     val articles: List<Article>,

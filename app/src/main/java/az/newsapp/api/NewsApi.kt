@@ -1,6 +1,6 @@
 package az.newsapp.api
 
-import az.newsapp.NewsResponse
+import az.newsapp.data.NewsResponse
 import az.newsapp.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET

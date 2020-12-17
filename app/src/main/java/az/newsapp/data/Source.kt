@@ -1,4 +1,4 @@
-package az.newsapp
+package az.newsapp.data
 
 data class Source(
     val id: Any,
