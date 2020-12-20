@@ -3,8 +3,10 @@ package az.newsapp.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import az.newsapp.data.Article
 import az.newsapp.data.NewsResponse
 import az.newsapp.repository.NewsRepository
+import az.newsapp.util.Constants.Companion.COUNTRY_CODE
 import az.newsapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -26,7 +28,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
         // call this method every time initiating this viewModel
         // when the app is opened it shows Breaking news that is
         // why we used it here
-        getBreakingNews("eg")
+        getBreakingNews(COUNTRY_CODE)
     }
 
     // using viewModelScope means that the coroutine will live only as long as the viewModel lives
@@ -65,4 +67,14 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
         }
         return Resource.Error(response.message())
     }
+
+    fun insertArticle(article: Article) = viewModelScope.launch {
+        newsRepository.insertArticle(article)
+    }
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
+
+    fun getSavedNews() = newsRepository.getSavedNews()
 }

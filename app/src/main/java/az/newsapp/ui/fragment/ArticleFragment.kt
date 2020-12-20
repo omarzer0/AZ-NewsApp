@@ -1,6 +1,7 @@
 package az.newsapp.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import az.newsapp.R
 import az.newsapp.ui.NewsActivity
 import az.newsapp.ui.NewsViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_article.*
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
@@ -30,7 +32,17 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
         fragmentArticleWebView.apply {
             webViewClient = WebViewClient()
-            loadUrl(article.url)
+            article.url?.let { loadUrl(it) }
+        }
+
+        fragmentArticleFab.setOnClickListener {
+
+            viewModel.insertArticle(article)
+            Snackbar.make(
+                view,
+                getString(R.string.article_saved_successfully),
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 }
