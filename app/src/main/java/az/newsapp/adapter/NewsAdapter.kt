@@ -53,20 +53,16 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             itemArticleTitleTV.text = currentArticle.title
             itemArticleDescriptionTV.text = currentArticle.description
             itemArticlePublishedAtTV.text = currentArticle.publishedAt
-            setOnItemClickListener {
-                // it refers to onItemClickListener we have
-                // if it is not null assign currentArticle to 'it' the listener
-                onItemClickListener?.let { it(currentArticle) }
-            }
+            setOnClickListener { onArticleClickListener?.let { it(currentArticle) } }
         }
     }
 
     // this takes lambda (receives an Article 'that has been clicked') and returns nothing
-    private var onItemClickListener: ((Article) -> Unit)? = null
+    private var onArticleClickListener: ((Article) -> Unit)? = null
 
     // must have more clarifications but it works fine every time
     // it assigns the passed listener to a the clickListener
-    fun setOnItemClickListener(listener: (Article) -> Unit) {
-        onItemClickListener = listener
+    fun setOnArticleClickListener(listener: (Article) -> Unit) {
+        onArticleClickListener = listener
     }
 }

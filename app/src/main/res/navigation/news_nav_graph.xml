@@ -6,9 +6,13 @@
     app:startDestination="@id/breakingNewsFragment">
     <fragment
         android:id="@+id/articleFragment"
-        android:name="omar.az.newsapp.ui.fragment.ArticleFragment"
+        android:name="az.newsapp.ui.fragment.ArticleFragment"
         android:label="fragment_article"
-        tools:layout="@layout/fragment_article" />
+        tools:layout="@layout/fragment_article" >
+        <argument
+            android:name="article"
+            app:argType="az.newsapp.data.Article" />
+    </fragment>
     <fragment
         android:id="@+id/breakingNewsFragment"
         android:name="omar.az.newsapp.ui.fragment.BreakingNewsFragment"

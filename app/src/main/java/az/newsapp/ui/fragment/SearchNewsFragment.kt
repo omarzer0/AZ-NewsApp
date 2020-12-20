@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import az.newsapp.R
 import az.newsapp.adapter.NewsAdapter
@@ -32,6 +33,16 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         // like java (getActivity).viewModel
         viewModel = (activity as NewsActivity).viewModel
         setUpRecyclerView()
+
+
+        newsAdapter.setOnArticleClickListener {
+            val bundle = Bundle()
+            bundle.putSerializable("article", it)
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleFragment3,
+                bundle
+            )
+        }
 
         // we need to add a delay when the user types a char
         // to minimize the number of network calls
