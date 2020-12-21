@@ -15,6 +15,9 @@ import retrofit2.Response
 // we use it here to get the data when it is called from the fragment
 class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
 
+    var breakingNewsResponse: NewsResponse? = null
+    var searchNewsResponse: NewsResponse? = null
+
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
 
     // we manage the pagination here due to surviving lifeCycle changes
@@ -52,7 +55,18 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
     private fun handelBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                breakingNewsPage++
+                // if 1st time breakingNewsResponse will be null so init it with the response
+                // else get the old (from breakingNewsResponse ) and the new articles
+                // add them together and increase the page number
+                // return resultResponse if the 1st time else return breakingNewsResponse
+                if (breakingNewsResponse == null) breakingNewsResponse = resultResponse
+                else {
+                    val oldArticles = breakingNewsResponse?.articles
+                    val newArticles = resultResponse.articles
+                    oldArticles?.addAll(newArticles)
+                }
+                return Resource.Success(breakingNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -62,7 +76,14 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
     private fun handelSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
+                searchNewsPage++
+                if (searchNewsResponse == null) searchNewsResponse = resultResponse
+                else {
+                    val oldArticles = searchNewsResponse?.articles
+                    val newArticles = resultResponse.articles
+                    oldArticles?.addAll(newArticles)
+                }
+                return Resource.Success(searchNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
