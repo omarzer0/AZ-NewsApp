@@ -1,5 +1,6 @@
 package az.newsapp.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import az.newsapp.util.Constants.Companion.COUNTRY_CODE
 import az.newsapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.lang.Exception
 
 // to prevent the fragment from dealing with coroutines
 // we use it here to get the data when it is called from the fragment
@@ -39,17 +41,25 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
         // before making the actual call we should send the state (which is loading here)
         // when ever we postValue all subscribers will get notified with the newest changes
         breakingNews.postValue(Resource.Loading())
-        // the actual call
-        val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
-        // after the response is fetched call postValue
-        // when ever we postValue all subscribers will get notified with the newest changes
-        breakingNews.postValue(handelBreakingNewsResponse(response))
+        try {
+            // the actual call
+            val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
+            // after the response is fetched call postValue
+            // when ever we postValue all subscribers will get notified with the newest changes
+            breakingNews.postValue(handelBreakingNewsResponse(response))
+        } catch (e: Exception) {
+            breakingNews.postValue(Resource.Error("No internet connection"))
+        }
     }
 
     fun searchNews(searchQuery: String) = viewModelScope.launch {
         searchNews.postValue(Resource.Loading())
-        val response = newsRepository.searchNews(searchQuery, searchNewsPage)
-        searchNews.postValue(handelSearchNewsResponse(response))
+        try {
+            val response = newsRepository.searchNews(searchQuery, searchNewsPage)
+            searchNews.postValue(handelSearchNewsResponse(response))
+        } catch (e: Exception) {
+            searchNews.postValue(Resource.Error("No internet connection"))
+        }
     }
 
     private fun handelBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
