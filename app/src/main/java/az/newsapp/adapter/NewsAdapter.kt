@@ -48,8 +48,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
         val currentArticle = differ.currentList[position]
         // use apply to apply all what is inside to the outer object
         // relief from the hell of holder. holder. holder.
-        val requestOptions =
-            RequestOptions().placeholder(R.drawable.no_image_foreground)
+        val requestOptions = RequestOptions().placeholder(R.drawable.ic_no_image)
         holder.itemView.apply {
             // this is the view not the adapter
             Glide.with(this).setDefaultRequestOptions(requestOptions)
