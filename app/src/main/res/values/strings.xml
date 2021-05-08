@@ -10,4 +10,7 @@
     <string name="save_news">Save News</string>
     <string name="article_saved_successfully">Article saved successfully</string>
     <string name="successfully_deleted_item">Successfully deleted article</string>
+    <string name="author">author</string>
+    <string name="time">time</string>
+    <string name="date">date</string>
 </resources>

@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import az.newsapp.R
 import az.newsapp.data.Article
+import az.newsapp.util.Utils
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_article.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
@@ -43,16 +45,28 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        val currentArticle = differ.currentList.get(position)
+        val currentArticle = differ.currentList[position]
         // use apply to apply all what is inside to the outer object
         // relief from the hell of holder. holder. holder.
+        val requestOptions =
+            RequestOptions().placeholder(R.drawable.no_image_foreground)
         holder.itemView.apply {
             // this is the view not the adapter
-            Glide.with(this).load(currentArticle.urlToImage).into(itemArticleImgImageView)
+            Glide.with(this).setDefaultRequestOptions(requestOptions)
+                .load(currentArticle.urlToImage).into(itemArticleImgImageView)
+
             itemArticleSourceTV.text = currentArticle.source?.name ?: "unknown"
-            itemArticleTitleTV.text = currentArticle.title
-            itemArticleDescriptionTV.text = currentArticle.description
-            itemArticlePublishedAtTV.text = currentArticle.publishedAt
+
+            itemArticleTitleTV.text = currentArticle.title ?: "unknown"
+
+            itemArticleAuthor.text = currentArticle.author ?: "unknown"
+
+            itemArticlePublishedDate.text =
+                Utils.getTimeFromTimeStamp(currentArticle.publishedAt)?.get(1) ?: "unknown"
+
+            itemArticlePublishedTime.text =
+                Utils.getTimeFromTimeStamp(currentArticle.publishedAt)?.get(0) ?: "unknown"
+
             setOnClickListener { onArticleClickListener?.let { it(currentArticle) } }
         }
     }

@@ -9,7 +9,7 @@ interface ArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     // the return type is the id of the inserted item
-    suspend fun insert(article: Article): Long
+    suspend fun insert(article: Article)
 
     // room query not retrofit ;)
     // get all articles stored in room db

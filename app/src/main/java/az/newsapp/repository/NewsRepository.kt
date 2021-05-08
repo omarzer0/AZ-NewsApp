@@ -6,7 +6,7 @@ import az.newsapp.data.Article
 import az.newsapp.db.ArticleDatabase
 
 // responsible for DB and Network data fetching
-class NewsRepository(val db: ArticleDatabase) : ViewModel() {
+class NewsRepository(val db: ArticleDatabase) {
 
     // calls the singleton instance of retrofit to get the data
     suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
